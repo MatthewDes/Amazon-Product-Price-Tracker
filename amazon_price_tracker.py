@@ -27,7 +27,7 @@ def scrape_price():
     # Check if the request was successful
     if response.status_code == 200:
         soup = BeautifulSoup(response.content, "lxml")
-        #print(soup.prettify())  # Print the HTML content for debugging
+        print(soup.prettify())  # Print the HTML content for debugging
         try:
             title = soup.find(id="productTitle").get_text().strip()
             price_whole = soup.find("span", class_="a-price-whole").get_text()
