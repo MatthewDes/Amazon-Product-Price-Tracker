@@ -1,0 +1,33 @@
+name: Run Amazon Price Tracker
+
+on:
+  schedule:
+    - cron: "0 8 * * *"  # Runs every day at 08:00 UTC
+  workflow_dispatch:      # Lets you trigger it manually from GitHub
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run tracker
+        run: python amazon_price_tracker.py
+       
+      - name: Commit and push changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add amazon_ssd_price_log.csv
+          git commit -m "Update price data"
+          git push
